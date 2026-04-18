@@ -41,7 +41,7 @@ def execute_circuit():
     supported_formats = ('.wav', '.mp3', '.m4a', '.flac')
     input_file = None
 
-    # Logic: Find any audio file that is NOT already a Signature Master
+    # Scan for any audio file that isn't already a Signature Master
     for file in os.listdir('.'):
         name_lower = file.lower()
         if name_lower.endswith(supported_formats):
@@ -51,7 +51,7 @@ def execute_circuit():
                 break
 
     if not input_file:
-        print("CRITICAL: Signal Acquisition Failed. No raw audio detected.")
+        print("CRITICAL: Signal Acquisition Failed. Ensure audio files are in the root directory.")
         return
 
     math = get_brus_quantum_math()
@@ -71,7 +71,7 @@ def execute_circuit():
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError:
         print("Quantum Chain Collapse. Reverting to Safe Confinement...")
-        # Fallback now safely uses the scoped input_file
+        # Emergency backup mastering
         subprocess.run(["ffmpeg", "-y", "-i", input_file, "-af", "loudnorm=I=-14", "-b:a", "320k", output_name], check=True)
 
     if os.path.exists(output_name):
@@ -86,26 +86,7 @@ def execute_circuit():
         }
         with open('latest_session.json', 'w') as f:
             json.dump(live_entry, f, indent=4)
-        print(f"SUCCESS: {output_name} published.")
-
-if __name__ == "__main__":
-    execute_circuit()
-    except subprocess.CalledProcessError:
-        subprocess.run(["ffmpeg", "-y", "-i", input_file, "-af", "loudnorm=I=-14", "-b:a", "320k", output_name], check=True)
-
-    if os.path.exists(output_name):
-        url_safe_name = output_name.replace(" ", "%20")
-        live_entry = {
-            "timestamp": TIMESTAMP,
-            "artist": ARTIST,
-            "song": SONG,
-            "status": "POPE TROY SIGNATURE MASTER COMPLETE",
-            "engine": "PRCE V12 (Brus-Frequency)",
-            "download_url": f"{RAW_BASE_URL}{url_safe_name}"
-        }
-        with open('latest_session.json', 'w') as f:
-            json.dump(live_entry, f, indent=4)
-        print(f"SUCCESS: {output_name} published.")
+        print(f"SUCCESS: {output_name} published to Celsius Cloud.")
 
 if __name__ == "__main__":
     execute_circuit()
