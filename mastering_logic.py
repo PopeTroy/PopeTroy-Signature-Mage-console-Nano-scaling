@@ -9,7 +9,7 @@ ARTIST = os.getenv('ARTIST', 'Unknown Artist')
 SONG = os.getenv('SONG', 'New Master')
 USER_CMD = os.getenv('USER_COMMAND', 'Expert Master')
 
-# Updated to match the new repository name
+# Updated to match the new repository name from screenshot
 USERNAME = "PopeTroy"
 REPO = "PopeTroy-Signature-Mage-console-Nano-scaling"
 RAW_BASE_URL = f"https://raw.githubusercontent.com/{USERNAME}/{REPO}/main/"
@@ -29,13 +29,16 @@ def get_brus_quantum_math():
     try:
         completion = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
-            messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}],
+            messages=[
+                {"role": "system", "content": system_prompt}, 
+                {"role": "user", "content": user_prompt}
+            ],
             temperature=0.1
         )
         math = completion.choices[0].message.content.strip()
         return math.replace('"', '').replace('`', '').replace(';', ',')
     except Exception:
-        # Fallback logic if AI call fails
+        # High-fidelity fallback string
         return "equalizer=f=60:width_type=h:w=1:g=-2,equalizer=f=12000:width_type=h:w=2:g=1.5,loudnorm=I=-14:TP=-1.5:LRA=11"
 
 def execute_circuit():
@@ -67,7 +70,7 @@ def execute_circuit():
     try:
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError:
-        # Emergency safety mastering if the complex filter string fails
+        # Emergency safety bypass
         subprocess.run(["ffmpeg", "-y", "-i", input_file, "-af", "loudnorm=I=-14", "-b:a", "320k", output_name], check=True)
 
     if os.path.exists(output_name):
@@ -82,24 +85,10 @@ def execute_circuit():
         }
         with open('latest_session.json', 'w') as f:
             json.dump(live_entry, f, indent=4)
-        print(f"SUCCESS: {output_name} published to Nano-Scaling Engine.")
+        print(f"SUCCESS: {output_name} published to {REPO}.")
 
 if __name__ == "__main__":
     execute_circuit()
-            temperature=0.1
-        )
-        math = completion.choices[0].message.content.strip()
-        return math.replace('"', '').replace('`', '').replace(';', ',')
-    except Exception:
-        return "equalizer=f=60:width_type=h:w=1:g=-2,equalizer=f=12000:width_type=h:w=2:g=1.5,loudnorm=I=-14:TP=-1.5:LRA=11"
-
-def execute_circuit():
-    print("--- SCANNING FOR RAW SIGNAL ---")
-    supported_formats = ('.wav', '.mp3', '.m4a', '.flac')
-    input_file = None
-
-    for file in os.listdir('.'):
-        if file.lower().endswith(supported_formats) and "master" not in file.lower():
             input_file = file
             print(f"SIGNAL ACQUIRED: {input_file}")
             break
