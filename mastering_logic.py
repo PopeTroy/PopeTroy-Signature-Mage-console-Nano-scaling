@@ -41,15 +41,17 @@ def execute_circuit():
     supported_formats = ('.wav', '.mp3', '.m4a', '.flac')
     input_file = None
 
-    # Identify the raw audio file
+    # Logic: Find any audio file that is NOT already a Signature Master
     for file in os.listdir('.'):
-        if file.lower().endswith(supported_formats) and "master" not in file.lower():
-            input_file = file
-            print(f"SIGNAL ACQUIRED: {input_file}")
-            break
+        name_lower = file.lower()
+        if name_lower.endswith(supported_formats):
+            if "signature master" not in name_lower:
+                input_file = file
+                print(f"SIGNAL ACQUIRED: {input_file}")
+                break
 
     if not input_file:
-        print("CRITICAL: Signal Acquisition Failed. No input file found.")
+        print("CRITICAL: Signal Acquisition Failed. No raw audio detected.")
         return
 
     math = get_brus_quantum_math()
@@ -69,7 +71,7 @@ def execute_circuit():
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError:
         print("Quantum Chain Collapse. Reverting to Safe Confinement...")
-        # Fixed: input_file is now properly defined in this scope
+        # Fallback now safely uses the scoped input_file
         subprocess.run(["ffmpeg", "-y", "-i", input_file, "-af", "loudnorm=I=-14", "-b:a", "320k", output_name], check=True)
 
     if os.path.exists(output_name):
@@ -84,22 +86,10 @@ def execute_circuit():
         }
         with open('latest_session.json', 'w') as f:
             json.dump(live_entry, f, indent=4)
-        print(f"SUCCESS: {output_name} published to Celsius Cloud.")
+        print(f"SUCCESS: {output_name} published.")
 
 if __name__ == "__main__":
     execute_circuit()
-if __name__ == "__main__":
-    execute_circuit()
-    cmd = [
-        "ffmpeg", "-y", "-i", input_file,
-        "-af", math,
-        "-codec:a", "libmp3lame", "-b:a", "320k",
-        "-metadata", f"title={SONG}", "-metadata", f"artist={ARTIST}",
-        output_name
-    ]
-    
-    try:
-        subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError:
         subprocess.run(["ffmpeg", "-y", "-i", input_file, "-af", "loudnorm=I=-14", "-b:a", "320k", output_name], check=True)
 
