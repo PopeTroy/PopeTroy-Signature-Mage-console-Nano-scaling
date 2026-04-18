@@ -39,7 +39,8 @@ jobs:
         run: |
           git config --global user.name "PopeTroy"
           git config --global user.email "bot@celsiusmediagroup.co.za"
-          git remote set-url origin https://x-access-token:${MY_PAT}@github.com/PopeTroy/celsius-mage-console-pope-troy-signature.git
+          # Updated to the new Nano-scaling repo name
+          git remote set-url origin https://x-access-token:${MY_PAT}@github.com/PopeTroy/PopeTroy-Signature-Mage-console-Nano-scaling.git
           git add latest_session.json
           git add -f "*.mp3" || echo "No audio"
           git commit -m "Master Published: ${{ github.event.inputs.song_title }}" || echo "No changes"
