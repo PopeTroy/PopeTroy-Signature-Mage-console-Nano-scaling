@@ -10,7 +10,7 @@ SONG = os.getenv('SONG', 'New Master')
 USER_CMD = os.getenv('USER_COMMAND', 'Expert Master')
 
 USERNAME = "PopeTroy"
-REPO = "celsius-mage-console-pope-troy-signature"
+REPO = "PopeTroy-Signature-Mage-console-Nano-scaling"
 RAW_BASE_URL = f"https://raw.githubusercontent.com/{USERNAME}/{REPO}/main/"
 
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
