@@ -3,13 +3,10 @@ name: Celsius Mage Engine Dispatcher
 on:
   workflow_dispatch:
     inputs:
-      puter_link: { description: 'Logic Constant', required: true, default: '1' }
       artist_name: { description: 'Artist', required: true, default: 'Pope Troy' }
       song_title: { description: 'Song', required: true, default: 'Pergamum' }
-      producer: { description: 'Producer', required: true, default: 'Celsius Media Group' }
       user_command: { description: 'Prophetic Goal', required: true }
 
-# Added explicit write permissions to clear the 403 errors
 permissions:
   contents: write
   actions: write
@@ -22,14 +19,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          # Uses your PAT for the initial handshake to prevent 128 error
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Studio Setup
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg
-          pip install requests groq
+          # Added river to the installation line to fix the ModuleNotFoundError
+          pip install requests groq river
 
       - name: Execute Expert Master
         env:
@@ -47,16 +44,14 @@ jobs:
           git config --global user.name "PopeTroy"
           git config --global user.email "bot@celsiusmediagroup.co.za"
           
-          # Force the remote to use the PAT for authentication to bypass 403
           git remote set-url origin https://x-access-token:${MY_PAT}@github.com/PopeTroy/PopeTroy-Signature-Mage-console-Nano-scaling.git
           
           git add latest_session.json
-          git add -f "*.mp3" || echo "No audio signal detected"
+          git add -f "*.mp3" || echo "No audio signal"
           
-          # Commit only if changes exist to avoid empty commit errors
           if git diff --staged --quiet; then
-            echo "No changes to commit."
+            echo "No changes"
           else
-            git commit -m "Signature Master Published: ${{ github.event.inputs.song_title }}"
+            git commit -m "Master Published: ${{ github.event.inputs.song_title }}"
             git push origin main
           fi
