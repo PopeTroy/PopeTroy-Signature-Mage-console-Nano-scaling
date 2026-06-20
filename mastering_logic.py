@@ -4,6 +4,7 @@ import asyncio
 import logging
 import datetime
 import uuid
+import argparse  # Unified to prevent argparse NameError
 from groq import AsyncGroq
 from river import anomaly
 
@@ -17,7 +18,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("V12_Streaming_Core")
 
-# Fixes the NameError by declaring the repository contracts globally
+# Global variables locked down to prevent reference fragmentation
 TIMESTAMP = os.getenv('MAGE_TIMESTAMP', datetime.datetime.now(datetime.timezone.utc).isoformat())
 ARTIST = os.getenv('ARTIST', 'Pope Troy')
 SONG = os.getenv('SONG', 'New Master')
@@ -46,7 +47,7 @@ class V12PredictiveCarburetor:
     def evaluate_temporal_input_vectors(historical_inputs: list) -> dict:
         """
         Processes a sliding window of recent user controller actions to map out 
-        the next 6,000 milliseconds of prospective positional frame variants.
+        the next 6,000 milliseconds of prospective positional frame variations.
         """
         logger.info("🌀 [1:6000 TEMPORAL PREDICTOR] Extrapolating look-ahead trajectory...")
         if not historical_inputs:
@@ -289,6 +290,10 @@ async def execute_circuit_async():
             json.dump(session_receipt, f, indent=4)
         logger.info(f"🏆 SYSTEM DEMO SECURED: '{output_name}' has been compiled and logged via the V12 Predictive Carburetor.")
 
+
+# =====================================================================
+# UNIFIED INTERFACE ENTRYPOINT
+# =====================================================================
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Celsius Technology Engine Core Runtime Frame.")
     parser.add_argument("--mode", choices=["server", "generate_js", "test_purge"], default="server")
